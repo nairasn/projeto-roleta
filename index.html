@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roleta: Sim ou Não</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #ffe5f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #8d4925;
+      margin-bottom: 30px;
+    }
+
+    .roleta {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 10px solid #c594aa;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      transform: rotate(0deg);
+      transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .opcao {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      top: 0;
+      transform-origin: 100% 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .opcao.sim {
+      background-color: #c57d56;
+      left: 0;
+      transform: rotate(0deg);
+      text-transform: uppercase;
+    }
+
+    .opcao.nao {
+      background-color: #fdcae1;
+      left: 0;
+      transform: rotate(180deg);
+      text-transform: uppercase;
+    }
+
+    .opcao.nao span {
+      transform: rotate(-180deg);
+      display: inline-block;
+    }
+
+    button {
+      margin-top: 40px;
+      padding: 12px 30px;
+      font-size: 18px;
+      background-color: #c594aa;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #8d4925;
+    }
+
+    .resultado {
+      font-size: 32px;
+      margin-top: 30px;
+      color: #8d4925;
+      font-weight: bold;
+    }
+
+    .historico {
+      margin-top: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 18px;
+      color: #8d4925;
+    }
+
+    .historico ul {
+      padding-left: 20px;
+      margin: 10px 0 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Roleta de Decisão</h1>
+
+  
+  <div id="roleta" class="roleta">
+    <div class="opcao sim">SIM</div>
+    <div class="opcao nao"><span>NÃO</span></div>
+  </div>
+
+  <button onclick="girarRoleta()">Girar</button>
+
+  <div id="resultado" class="resultado">?</div>
+
+  <div class="historico" id="historico">
+    <strong>Histórico:</strong>
+    <ul id="listaHistorico"></ul>
+  </div>
+
+  <script>
+    let anguloAtual = 0;
+
+    function girarRoleta() {
+      const roleta = document.getElementById("roleta");
+      const resultado = document.getElementById("resultado");
+      const listaHistorico = document.getElementById("listaHistorico");
+
+      const voltas = Math.floor(Math.random() * 5) + 5;
+      const adicional = Math.random() < 0.5 ? 0 : 180;
+
+      anguloAtual += (360 * voltas + adicional);
+      roleta.style.transform = `rotate(${anguloAtual}deg)`;
+
+      setTimeout(() => {
+        const final = (anguloAtual % 360);
+        const escolha = (final >= 0 && final < 180) ? "SIM" : "NÃO";
+        resultado.textContent = escolha;
+
+        const item = document.createElement("li");
+        item.textContent = escolha;
+        listaHistorico.prepend(item);
+      }, 3100);
+    }
+  </script>
+  
+</body>
+</html>
